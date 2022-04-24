@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Infrastructure.Application
 {
-    internal interface Service
+    public interface Service
     {
     }
 }
