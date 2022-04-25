@@ -80,10 +80,13 @@ namespace BookStore.Services.Test.Unit.Categories
         public void Edit_Category_inMemory()
         {
 
-            CreateCategoriesInDataBase();
-            int id = 1;
+            Category category = new Category
+            {
+                Title = "firstbook"
+            };
+          _dataContext.Manipulate(_=>_.Categories.Add(category));
             var dto = new AddCategoryDto { Title = "jenaee" };
-             _sut.Update(dto, id);
+             _sut.Update(dto, category.Id);
             _dataContext.Categories.Should().Contain(x => x.Title == dto.Title);
 
         }

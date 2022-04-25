@@ -65,7 +65,7 @@ namespace BookStore.Services.Books
             _unitOfWork.Commit();
         }
 
-        public void Update(CreateBookDTO book, int id)
+        public void Update(UpdatebooksDTO book, int id)
         {
             var oneBook = _bookRepository.GetById(id);
             if (oneBook == null)

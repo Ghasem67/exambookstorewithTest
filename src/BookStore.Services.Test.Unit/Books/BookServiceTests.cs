@@ -3,8 +3,10 @@ using BookStore.Infrastructure.Application;
 using BookStore.Infrastructure.Test;
 using BookStore.Persistence.EF;
 using BookStore.Persistence.EF.Books;
+using BookStore.Persistence.EF.Categories;
 using BookStore.Services.Books;
 using BookStore.Services.Books.Contract;
+using BookStore.Services.Categories.Contracts;
 using BookStore.test.tools;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +22,7 @@ namespace BookStore.Services.Test.Unit.Books
     public class BookServiceTests
     {
         private readonly EFDataContext _dbContext;
+        private readonly CategoryRepository _categoryRepository;
         private readonly UnitOfWork _unitOfWork;
         private readonly BookRepository _bookRepository;
         private readonly BookService _sut;
@@ -30,7 +33,8 @@ namespace BookStore.Services.Test.Unit.Books
                  .CreateDataContext<EFDataContext>();
             _unitOfWork = new EFUnitOfWork(_dbContext);
             _bookRepository = new EFBookRepository(_dbContext);
-            _sut = new bookAppService(_unitOfWork, _bookRepository);
+            _categoryRepository=new EFCategoryRepository(_dbContext);
+            _sut = new bookAppService(_unitOfWork, _bookRepository,_categoryRepository);
 
         }
         [Fact]
@@ -70,7 +74,8 @@ namespace BookStore.Services.Test.Unit.Books
                 Title = "jenaee"
             };
             _dbContext.Manipulate(_ => _.Books.Add(NewBook));
-            CreateBookDTO bookDTO = new CreateBookDTO
+
+            UpdatebooksDTO bookDTO = new UpdatebooksDTO
             {
                 Author = "ali",
                 Description = "salam",
@@ -78,13 +83,14 @@ namespace BookStore.Services.Test.Unit.Books
                 Title = "mardan",
                 CategoryId = category.Id
             };
-            Book book = _dbContext.Books.FirstOrDefault();
-            var books = book;
-            _sut.Update(bookDTO, books.Id);
+           
+            
+            _sut.Update(bookDTO, NewBook.Id);
+            var expended = _dbContext.Books.FirstOrDefault(_=>_.Id== bookDTO.id);
             _dbContext.Books.Should().Contain(x => x.Pages == bookDTO.Pages);
             _dbContext.Books.Should().Contain(x => x.Title == bookDTO.Title);
             _dbContext.Books.Should().Contain(x => x.Author == bookDTO.Author);
-            _dbContext.Books.Should().Contain(x => x.Id == books.Id);
+            _dbContext.Books.Should().Contain(x => x.Id == NewBook.Id);
         }
         [Fact]
         public void Delete_category_inMemory()
@@ -105,7 +111,7 @@ namespace BookStore.Services.Test.Unit.Books
             _dbContext.Books.Should().HaveCount(0);
         }
         [Fact]
-        public void GetAll()
+        public void ShowAll_category_()
         {
             var category = CreateFactory.Create("jenaee");
             _dbContext.Manipulate(_ => _.Categories.Add(category));

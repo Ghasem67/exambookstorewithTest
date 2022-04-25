@@ -11,7 +11,7 @@ namespace BookStore.Services.Books.Contract
     {
         void Add(CreateBookDTO book);
         void Remove(int bookId);
-        void Update(CreateBookDTO book, int id);
+        void Update(UpdatebooksDTO book, int id);
         Book GetbyId(int id);
         HashSet<Book> GetAll();
     }
