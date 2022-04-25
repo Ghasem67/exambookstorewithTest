@@ -1,0 +1,12 @@
+﻿<ProjectConfiguration>
+  <Settings>
+    <IgnoredTests>
+      <NamedTestSelector>
+        <TestName>BookStore.Services.Test.Unit.Categories.CategoryServiceTests.GetAll_returns_all_categories</TestName>
+      </NamedTestSelector>
+      <NamedTestSelector>
+        <TestName>BookStore.Services.Test.Unit.Categories.CategoryServiceTests.Add_adds_category_properly</TestName>
+      </NamedTestSelector>
+    </IgnoredTests>
+  </Settings>
+</ProjectConfiguration>
